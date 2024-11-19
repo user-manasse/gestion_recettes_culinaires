@@ -20,15 +20,16 @@ Suivez les étapes ci-dessous pour cloner le projet, configurer et démarrer l'a
    ```bash
    git clone https://github.com/user-manasse/gestion_recettes_culinaires.git
    cd gestion_recettes_culinaires
+- **Modifier des informations de connéxion à la base de données**: Modifier dans le .env le nom de l'utilisateur, et le mot de pass, ainsi que le nom de la base de donnée
 
 2. **Construisez les images Docker** :
    ```bash
    docker compose build
 
-- **Initialisez la base de données, Lancez l'application**: Modifier dans le .env le nom de l'utilisateur, et le mot de pass, ainsi que le nom de la base de donnée
+- **Initialisez la base de données, Lancez l'application**
 
    docker compose run web rails db:create db:migrate
    docker compose up
 
-2. **Accéder à l'application ** :
+3. **Accéder à l'application ** :
     Ouvrez votre navigateur et accédez à http://localhost:3092 pour voir l'application en fonctionnement.
