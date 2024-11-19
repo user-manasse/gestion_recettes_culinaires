@@ -1,0 +1,148 @@
+<%= form_with(model: recipe, local: true) do |form| %>
+  <% if @recipe.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(@recipe.errors.count, "erreur") %> :</h2>
+      <ul>
+        <% @recipe.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Recette -->
+  <div class="card mb-4">
+    <div class="card-header"><%= t('recipe') %></div>
+    <div class="card-body">
+      <div class="form-group">
+        <%= form.label :title, t('recipes.title') %>
+        <%= form.text_field :title, required: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :image, t('recipes.image') %>
+        <%= form.file_field :image, class: "form-control file-input", accept: "image/*", onchange: "previewImage(event)" %>
+      </div>
+
+      <div class="image-preview">
+        <% if @recipe.image.present? %>
+          <%= image_tag "/uploads/imgs/#{@recipe.image}", alt: t('recipes.image_preview'), id: "image-preview" %>
+        <% else %>
+          <img id="image-preview" class="hidden" alt=<%= t('recipes.image_preview') %> />
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :description, t('description') %>
+        <%= form.text_area :description, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :difficulty, t('difficulty') %>
+        <%= form.select :difficulty, options_for_select([[t('easy'), 1], [t('medium'), 2], [t('hard'), 3]], @recipe.difficulty), {}, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :preparation_time, t('recipes.preparation_time') %>
+        <%= form.number_field :preparation_time, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ingrédients -->
+  <div class="card mb-4">
+    <div class="card-header"><%= t('ingredients') %></div>
+    <div class="card-body">
+      <div id="ingredients">
+        <%= form.fields_for :ingredients do |ingredient_form| %>
+          <div class="nested-fields">
+            <div class="form-group">
+              <%= ingredient_form.label :name, t('recipes.title') %>
+              <%= ingredient_form.text_field :name, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= ingredient_form.label :quantity, t('quantity') %>
+              <%= ingredient_form.text_field :quantity, class: "form-control" %>
+            </div>
+
+            <%= ingredient_form.hidden_field :_destroy %> <!-- Champ pour suppression -->
+
+            <%= link_to "#", class: "remove-fields btn btn-danger btn-sm" do %>
+              <%= t('delete') %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "#", id: 'add_ingredient', class: "add-fields btn btn-primary fit-content", data: { id: "new_ingredient", fields: form.fields_for(:ingredients, Ingredient.new, child_index: "new_ingredient") { |ing| render("ingredient_fields", ing: ing) } } do %>
+        <i class="fas fa-plus"></i> <%= t('add_ingredient') %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Etapes -->
+  <div class="card mb-4">
+    <div class="card-header"><%= t('steps') %></div>
+    <div class="card-body">
+      <div id="steps">
+        <%= form.fields_for :steps do |step_form| %>
+          <div class="nested-step-fields">
+            <div class="form-group">
+              <%= step_form.label :description, t('description') %>
+              <%= step_form.text_area :description, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= step_form.label :position, t('position') %>
+              <%= step_form.number_field :position, class: "form-control" %>
+            </div>
+
+            <%= step_form.hidden_field :_destroy %> <!-- Champ pour suppression -->
+
+            <%= link_to t('delete'), '#', class: "remove-step-fields btn btn-danger btn-sm" %>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "#", id: 'add_step', class: "add-step-fields btn btn-primary fit-content", data: { id: "new_step", fields: form.fields_for(:steps, Step.new, child_index: "new_step") { |ing| render("step_fields", ing: ing) } } do %>
+        <i class="fas fa-plus"></i> <%= t('add_step') %>
+      <% end %>
+      
+    </div>
+  </div>
+
+  <!-- Ustensiles -->
+  <div class="card mb-4">
+    <div class="card-header"><%= t('utensils') %></div>
+    <div class="card-body">
+      <div id="utensils">
+        <%= form.fields_for :utensils do |utensil_form| %>
+          <div class="nested-utensil-fields">
+            <div class="form-group">
+              <%= utensil_form.label :name, t('utensil_name') %>
+              <%= utensil_form.text_field :name, class: "form-control" %>
+            </div>
+
+            <%= link_to t('delete'), '#', class: "remove-utensil-fields btn btn-danger btn-sm" %>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "#", id: 'add_utensil', class: "add-utensil-fields btn btn-primary fit-content", data: { id: "new_utensil", fields: form.fields_for(:utensils, Utensil.new, child_index: "new_utensil") { |ing| render("utensil_fields", ing: ing) } } do %>
+        <i class="fas fa-plus"></i> <%= t('add_utensil') %>
+      <% end %>
+      
+    </div>
+  </div>
+
+  <div class="d-flex flex-row align-items-center gap-2">
+      <div class="text-center">
+        <%= form.submit t('save'), class: "btn btn-success" %>
+      </div>
+
+      <%= link_to recipes_path, class: "btn btn-outline-secondary" do %>
+          <i class="fa fa-chevron-left"></i> <%= t('back_to_list') %>
+      <% end %>
+  </div>
+
+  
+<% end %>
+

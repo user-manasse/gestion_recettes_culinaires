@@ -1,0 +1,11 @@
+<div class="nested-utensil-fields">
+  <div class="form-group">
+    <%= ing.label :name, t('utensil_name') %>
+    <%= ing.text_field :name, class: "form-control" %>
+  </div>
+  <%= ing.hidden_field :_destroy %> <!-- Champ pour suppression -->
+  
+  <%= link_to "#", class: "remove-utensil-fields btn btn-danger btn-sm" do %>
+    <%= t('delete') %>
+  <% end %>
+</div>

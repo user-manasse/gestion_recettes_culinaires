@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gestion recettes culinaires !</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <!-- Structure Flexbox pour garder le footer en bas -->
+    <div class="d-flex flex-column min-vh-100">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+          <a class="navbar-brand" href="/"><%= t('manage_recipe') %></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse d-flex align-items-center justify-content-between" id="navbarNav">
+            
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                  <%= link_to t('recipes.list') , recipes_path, class: 'nav-link' %>
+                </li>
+                <li class="nav-item">
+                  <%= link_to new_recipe_path, class: 'nav-link' do %>
+                    <i class="fa fa-plus"></i> <%= t('recipes.new_recipe') %>
+                  <% end %>
+                </li>
+              </ul>
+
+              <div class="dropdown language">
+                  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <%= image_tag "/flags/#{locale}.png", class: "v-align-baseline" %>
+                  </button>
+
+                  <ul class="dropdown-menu dropdown-menu-fit">
+                      <li><a href="<%= url_for(locale: :en) %>" class="dropdown-item"><%= image_tag "/flags/en.png", class: "v-align-baseline" %></a></li>
+                      <li><a href="<%= url_for(locale: :fr) %>" class="dropdown-item"><%= image_tag "/flags/fr.png", class: "v-align-baseline" %></a></li>
+                  </ul>
+              </div>
+            
+          </div>
+        </div>
+      </nav>
+
+      <!-- Contenu principal -->
+      <main class="my-5 flex-grow-1">
+        <%= yield %>
+      </main>
+
+      <!-- Pied de page -->
+      <footer class="bg-primary text-white text-center py-3">
+        <p class="mb-0">© <%= Time.now.year %> Gestion de recettes culinaires. Tous droits réservés.</p>
+      </footer>
+    </div>
+
+  </body>
+</html>

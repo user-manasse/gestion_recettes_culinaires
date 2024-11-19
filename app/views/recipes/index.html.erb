@@ -1,0 +1,61 @@
+<div class="container jumbotron">
+  <div class="jumbotron-content">
+    <h1><%= t('culinary_recipe_management') %></h1>
+    <p><%= t('discover_create_manage_recipe') %></p>
+  </div>
+</div>
+
+<div class="my-5">
+
+  <div class="container d-flex justify-content-center">
+    <div class="search-form-container mb-4 p-3 rounded shadow-sm fit-content">
+      <%= form_with url: recipes_path, method: :get, local: true, class: "form-inline" do %>
+        <div class="row g-2 align-items-end">
+          <div class="col-md-4">
+            <%= label_tag :preparation_time, t('recipes.preparation_time'), class: "form-label" %>
+            <%= number_field_tag :preparation_time, params[:preparation_time], min: 0, class: "form-control", placeholder: t('max_time') %>
+          </div>
+
+          <div class="col-md-3">
+            <%= label_tag :difficulty, t('difficulty'), class: "form-label" %>
+            <%= select_tag :difficulty, options_for_select([[t('easy'), 1], [t('medium'), 2], [t('hard'), 3]], params[:difficulty]), prompt: t('choose_difficulty'), class: "form-select" %>
+          </div>
+
+          <div class="col-md-3">
+            <%= label_tag :ingredient, t('ingredient'), class: "form-label" %>
+            <%= text_field_tag :ingredient, params[:ingredient], class: "form-control", placeholder: t('ingredient') %>
+          </div>
+
+          <div class="col-md-2 text-end">
+            <%= button_tag(type: 'submit', class: 'btn btn-outline-secondary w-100', title: t('search')) do %>
+              <i class="fa fa-search"></i> <%= t('search') %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  
+  <div class="container">
+    <div class="row">
+        <% @recipes.each do |recipe| %>
+            <div class="col-md-3 mb-2">
+                <div class="profile-card">
+                    <% if recipe.image.present? %>
+                      <%= image_tag "/uploads/imgs/#{recipe.image}", class: "card-img-top img-fluid recipe-image" %>
+                    <% end %>
+                    <div class="article-content">
+                        <h2 class="article-title limit-text-2-lines"><%= recipe.title %></h2>
+                        <p class="article-description limit-text-3-lines">
+                            <%= recipe.description.truncate(100) %>
+                        </p>
+                        <%= link_to t('see_recipe'), recipe_path(recipe), class: 'button me-2' %>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>
+  
+</div>

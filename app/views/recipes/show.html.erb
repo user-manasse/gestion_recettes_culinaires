@@ -1,0 +1,73 @@
+<div class="recipe-detail-container container mt-5 max-width-900">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="card-title text-center mb-4"><%= @recipe.title %></h1>
+      <p class="card-text text-muted text-center mb-4"><%= @recipe.description %></p>
+      
+      <% if @recipe.image.present? %>
+        <div class="text-center mb-4">
+          <%= image_tag "/uploads/imgs/#{@recipe.image}", class: "img-fluid rounded" %>
+        </div>
+      <% end %>
+
+      <div class="d-flex justify-content-end mb-2 gap-2">
+
+        <%= link_to edit_recipe_path(@recipe), class: 'btn btn-secondary' do %>
+          <i class="fas fa-edit"></i> <%= t('edit') %>
+        <% end %>
+
+        <%= link_to delete_recipe_path(@recipe), method: :delete, data: { confirm: t('are_you_sure') }, class: 'btn btn-danger' do %>
+          <i class="fas fa-trash"></i> <%= t('delete') %>
+        <% end %>
+
+      </div>
+
+      <h3 class="mb-3"><%= t('ingredients') %></h3>
+      <ul class="list-group mb-4">
+        <% @recipe.ingredients.each do |ingredient| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <%= ingredient.name %>
+            <span class="badge bg-secondary rounded-pill"><%= ingredient.quantity %></span>
+          </li>
+        <% end %>
+      </ul>
+
+      <h3 class="mb-3"><%= t('utensils') %></h3>
+      <ul class="list-group mb-4">
+        <% @recipe.utensils.each do |utensil| %>
+          <li class="list-group-item"><%= utensil.name %></li>
+        <% end %>
+      </ul>
+
+      <h3 class="mb-3"><%= t('steps') %></h3>
+      <ol class="mb-4">
+        <% @recipe.steps.order(:position).each do |step| %>
+          <li><%= step.description %></li>
+        <% end %>
+      </ol>
+
+      <div class="text-center">
+        <%= link_to t('back_to_list'), recipes_path, class: 'btn btn-outline-secondary' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel"><%= t('confirm_delete') %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= t('are_you_sure') %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('cancel') %></button>
+        <button type="button" id="confirmDeleteButton" class="btn btn-danger"><%= t('delete') %></button>
+      </div>
+    </div>
+  </div>
+</div>

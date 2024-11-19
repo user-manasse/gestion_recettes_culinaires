@@ -1,0 +1,17 @@
+<div class="nested-fields">
+  <div class="form-group">
+    <%= ing.label :name, t('ingredient_name') %>
+    <%= ing.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= ing.label :quantity, t('quantity') %>
+    <%= ing.number_field :quantity, class: "form-control" %>
+  </div>
+
+  <%= ing.hidden_field :_destroy %> <!-- Champ pour suppression -->
+
+  <%= link_to "#", class: "remove-fields btn btn-danger btn-sm" do %>
+    <%= t('delete') %>
+  <% end %>
+</div>
