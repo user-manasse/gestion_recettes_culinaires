@@ -29,6 +29,7 @@ Suivez les étapes ci-dessous pour cloner le projet, configurer et démarrer l'a
 - **Initialisez la base de données, Lancez l'application**
 
    docker compose run web rails db:create db:migrate
+   
    docker compose up
 
 3. **Accéder à l'application ** :
