@@ -51,7 +51,21 @@ class RecipesController < ApplicationController
     @recipe = Recipe.find(params[:id])
 
     if params[:recipe][:image].present?
-      handle_image_upload
+
+      uploads_dir = Rails.root.join("public/uploads/imgs")
+      # Crée le répertoire si il n'existe pas
+      FileUtils.mkdir_p(uploads_dir) unless File.directory?(uploads_dir)
+      unique_filename = "#{SecureRandom.uuid}_#{params[:recipe][:image].original_filename}"
+      # Définit le chemin pour enregistrer l'image dans le dossier public
+      filepath = Rails.root.join("public/uploads/imgs/", unique_filename)
+
+      uploaded_file = params[:recipe][:image]
+
+      File.open(filepath, 'wb') do |file|
+        file.write(uploaded_file.read)
+      end
+
+      @recipe.image = unique_filename 
     end
 
     if @recipe.update(recipe_params)
