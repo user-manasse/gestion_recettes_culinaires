@@ -1,7 +1,7 @@
 <%= form_with(model: recipe, local: true) do |form| %>
   <% if @recipe.errors.any? %>
     <div id="error_explanation" class="alert alert-danger">
-      <h2><%= pluralize(@recipe.errors.count, "erreur") %> :</h2>
+      <h2><%= pluralize(@recipe.errors.count, "erreur") %> <%= t('prevented_his_recipe_saved') %> :</h2>
       <ul>
         <% @recipe.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,7 +10,7 @@
     </div>
   <% end %>
 
-  <!-- Recette -->
+  <!-- Recipe -->
   <div class="card mb-4">
     <div class="card-header"><%= t('recipe') %></div>
     <div class="card-body">
@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  <!-- Ingrédients -->
+  <!-- Ingredient -->
   <div class="card mb-4">
     <div class="card-header"><%= t('ingredients') %></div>
     <div class="card-body">
@@ -66,7 +66,7 @@
               <%= ingredient_form.text_field :quantity, class: "form-control" %>
             </div>
 
-            <%= ingredient_form.hidden_field :_destroy %> <!-- Champ pour suppression -->
+            <%= ingredient_form.hidden_field :_destroy %>
 
             <%= link_to "#", class: "remove-fields btn btn-danger btn-sm" do %>
               <%= t('delete') %>
@@ -80,7 +80,7 @@
     </div>
   </div>
 
-  <!-- Etapes -->
+  <!-- Step -->
   <div class="card mb-4">
     <div class="card-header"><%= t('steps') %></div>
     <div class="card-body">
@@ -97,7 +97,7 @@
               <%= step_form.number_field :position, class: "form-control" %>
             </div>
 
-            <%= step_form.hidden_field :_destroy %> <!-- Champ pour suppression -->
+            <%= step_form.hidden_field :_destroy %>
 
             <%= link_to t('delete'), '#', class: "remove-step-fields btn btn-danger btn-sm" %>
           </div>
@@ -110,7 +110,7 @@
     </div>
   </div>
 
-  <!-- Ustensiles -->
+  <!-- Utensil -->
   <div class="card mb-4">
     <div class="card-header"><%= t('utensils') %></div>
     <div class="card-body">
@@ -122,7 +122,7 @@
               <%= utensil_form.text_field :name, class: "form-control" %>
             </div>
 
-            <%= utensil_form.hidden_field :_destroy %> <!-- Champ pour suppression -->
+            <%= utensil_form.hidden_field :_destroy %>
 
             <%= link_to t('delete'), '#', class: "remove-utensil-fields btn btn-danger btn-sm" %>
           </div>

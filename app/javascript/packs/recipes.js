@@ -18,11 +18,10 @@ document.addEventListener('turbo:load', () => {
       if (e.target.classList.contains('remove-fields')) {
         e.preventDefault();
 
-        // Trouver le conteneur de l'ingrédient et marquer `_destroy` pour suppression
+        // Find the closest nested-fields element and set `_destroy` to true
         const ingredientFields = e.target.closest('.nested-fields');
         ingredientFields.querySelector('input[name*="[_destroy]"]').value = 'true';
         ingredientFields.style.display = 'none';
-        //e.target.closest('.nested-fields').remove();
       }
     });
   }
@@ -38,7 +37,7 @@ document.addEventListener('turbo:load', () => {
       e.preventDefault();
       console.log("Add utensil");
   
-      var new_id = new Date().getTime(); // Générer un ID unique
+      var new_id = new Date().getTime(); 
       var regexp = new RegExp("new_utensil", "g");
       console.log('Fiels: ', e.target.dataset.fields);
       var fields = e.target.dataset.fields.replace(regexp, new_id);
@@ -66,7 +65,7 @@ document.addEventListener('turbo:load', () => {
       e.preventDefault();
       console.log("Add step");
   
-      var new_id = new Date().getTime(); // Générer un ID unique
+      var new_id = new Date().getTime();
       var regexp = new RegExp("new_step", "g");
       var fields = e.target.dataset.fields.replace(regexp, new_id);
       stepsDiv.insertAdjacentHTML("beforeend", fields);
@@ -97,6 +96,6 @@ function previewImage(event) {
   }
 }
 
-// Expose la fonction pour qu'elle soit disponible globalement
+// Attach the `previewImage` function to the `onchange` event globaly
 window.previewImage = previewImage;
   

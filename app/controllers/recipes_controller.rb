@@ -2,22 +2,20 @@ require 'fileutils'
 
 class RecipesController < ApplicationController
   def index
+    # Initialisation of variable @recipes
     @recipes = Recipe.all
-    
-    # Filtrer les recettes en fonction des paramètres de recherche
-    if params[:preparation_time].present?
-      @recipes = @recipes.where("preparation_time <= ?", params[:preparation_time].to_i)
-    end
 
-    # Filtrer les recettes en fonction des paramètres de difficulté
-    if params[:difficulty].present?
-      @recipes = @recipes.where(difficulty: params[:difficulty].to_i)
-    end
+    # Apply all filters to @recipes if any queries are present
+    @recipes = @recipes.where("preparation_time <= ?", params[:preparation_time].to_i) if params[:preparation_time].present?
+    @recipes = @recipes.where(difficulty: params[:difficulty].to_i) if params[:difficulty].present?
 
     if params[:ingredient].present?
-      # Filtrer par ingrédient en effectuant une jointure sur le modèle Ingredient
+      # Filter by ingredients by name
       @recipes = @recipes.joins(:ingredients).where("ingredients.name ILIKE ?", "%#{params[:ingredient]}%").distinct
     end
+
+    # If no queries are present, limit the results to 10
+    @recipes = @recipes.limit(10) if params[:preparation_time].blank? && params[:difficulty].blank? && params[:ingredient].blank?
   end
 
   def show
@@ -31,14 +29,9 @@ class RecipesController < ApplicationController
   def create
     @recipe = Recipe.new(recipe_params)
 
-    if params[:recipe][:image].present?
-      handle_image_upload
-    end
-
     if @recipe.save
       redirect_to @recipe, notice: "Recette créée avec succès."
     else
-      # Si la sauvegarde échoue, rendez le formulaire de création avec les erreurs
       render :new, status: :unprocessable_entity
     end
   end
@@ -49,24 +42,6 @@ class RecipesController < ApplicationController
 
   def update
     @recipe = Recipe.find(params[:id])
-
-    if params[:recipe][:image].present?
-
-      uploads_dir = Rails.root.join("public/uploads/imgs")
-      # Crée le répertoire si il n'existe pas
-      FileUtils.mkdir_p(uploads_dir) unless File.directory?(uploads_dir)
-      unique_filename = "#{SecureRandom.uuid}_#{params[:recipe][:image].original_filename}"
-      # Définit le chemin pour enregistrer l'image dans le dossier public
-      filepath = Rails.root.join("public/uploads/imgs/", unique_filename)
-
-      uploaded_file = params[:recipe][:image]
-
-      File.open(filepath, 'wb') do |file|
-        file.write(uploaded_file.read)
-      end
-
-      @recipe.image = unique_filename 
-    end
 
     if @recipe.update(recipe_params)
       redirect_to @recipe, notice: "Recette mise à jour."
@@ -82,28 +57,6 @@ class RecipesController < ApplicationController
   end
 
   private
-
-  def handle_image_upload
-    unique_filename = "#{SecureRandom.uuid}_#{params[:recipe][:image].original_filename}"
-    uploads_dir = Rails.root.join("public/uploads/imgs")
-
-    # Crée le répertoire si il n'existe pas
-    FileUtils.mkdir_p(uploads_dir) unless File.directory?(uploads_dir)
-
-    filepath = Rails.root.join(uploads_dir, unique_filename)
-
-    # Sauvegarde le fichier
-    File.open(filepath, "wb") do |file|
-      file.write(params[:recipe][:image].read)
-    end
-
-    # Assigne le nom du fichier unique à l'attribut image de la recette
-    @recipe.image = unique_filename
-  end
-
-  def set_recipe
-    @recipe = Recipe.find(params[:id])
-  end
 
   def recipe_params
     params.require(:recipe).permit(

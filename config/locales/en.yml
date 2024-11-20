@@ -79,3 +79,41 @@ en:
   culinary_recipe_management: "Culinary Recipe Management"
   discover_create_manage_recipe: "Discover, create and manage your favorite recipes in one place"
   see_recipe: "See the recipe"
+  all_rights_reserved: "Recipe management. All rights reserved."
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Cannot delete this record because %{record} depends on it"
+          has_many: "Cannot delete this record because %{record} depend on it"
+    models:
+      recipe: "Recipe"
+      ingredient: "Ingredient"
+      utensil: "Utensil"
+      step: "Step"
+    attributes:
+      recipe:
+        title: "Title"
+        description: "Description"
+        image: "Image"
+        preparation_time: "Preparation time"
+        difficulty: "Difficulty"
+      ingredient:
+        name: "Name"
+        quantity: "Quantity"
+      utensil:
+        name: "Name"
+      step:
+        description: "Description"
+        position: "Position"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "can't be blank"
+      invalid: "is invalid"
+      taken: "has already been taken"
+      too_short: "is too short (minimum %{count} characters)"
+      too_long: "is too long (maximum %{count} characters)"
+      not_a_number: "is not a number"
+  prevented_his_recipe_saved: "prevented this recipe from being registered"

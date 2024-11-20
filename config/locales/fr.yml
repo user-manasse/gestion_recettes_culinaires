@@ -48,3 +48,41 @@ fr:
   culinary_recipe_management: "Gestion de Recettes Culinaires"
   discover_create_manage_recipe: "Découvrez, créez et gérez vos recettes préférées en un seul endroit"
   see_recipe: "Voir la recette"
+  all_rights_reserved: "Gestion de recettes culinaires. Tous droits réservés"
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "Validation failed : %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Impossible de supprimer cet enregistrement car %{record} dépend de lui"
+          has_many: "Impossible de supprimer cet enregistrement car %{record} dépend de lui"
+    models:
+      recipe: "Recette"
+      ingredient: "Ingrédient"
+      utensil: "Ustensil"
+      step: "Etape"
+    attributes:
+      recipe:
+        title: "Titre"
+        description: "Description"
+        image: "Image"
+        preparation_time: "Temps de preparation"
+        difficulty: "Difficulté"
+      ingredient:
+        name: "Nom"
+        quantity: "Quantité"
+      utensil:
+        name: "Nom"
+      step:
+        description: "Description"
+        position: "Position"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "ne peut pas être vide"
+      invalid: "est invalide"
+      taken: "a déjà été pris"
+      too_short: "est trop court (minimum %{count} caractères)"
+      too_long: "est trop long (maximum %{count} caractères)"
+      not_a_number: "n'est pas un nombre"
+  prevented_his_recipe_saved: "ont empêché cette recette d'être enregistrée"
